@@ -1,15 +1,20 @@
-```javascript
-function handleFieldChange(event) {
-  const {dispatch} = this.props
-  const value = event.target.value
-  const componentName = this.constructor.name
-  const fieldName = 'fieldName'
+```
+import actions from './actions'
 
-  dispatch(actions.saveField(componentName, fieldName, value))
-  const validator = this.getValidator(componentName, fieldName)
-  dispatch(actions.validateField(
-    componentName, fieldName, validator(value)
-  ))
+class SomeComponent extends Component {
+  handleFieldChange(event) {
+    const {dispatch} = this.props
+    const value = event.target.value
+    const componentName = this.constructor.name
+    const fieldName = 'fieldName'
+  
+    dispatch(actions.saveField(componentName, fieldName, value))
+    const validator = this.getValidator(componentName, fieldName)
+    dispatch(actions.validateField(
+      componentName, fieldName, validator(value)
+    ))
+  }
+  ...
 }
 ```
 

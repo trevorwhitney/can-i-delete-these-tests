@@ -11,4 +11,4 @@ function handleFieldChange(event) {
 }
 ```
 
-Note: Find and replace would not work because of different implementations, a larger issue, but not going to discuss here. Correct pattern was designed out using the acceptance tests that were already there.
+Note: We came to this through unit tests and acceptance tests. Then changed it everywhere else, and used acceptance tests to confirm it worked.

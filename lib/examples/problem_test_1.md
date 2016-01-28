@@ -11,3 +11,5 @@ describe('changing the field value', () => {
     })
     //...
 ```
+
+Note: The tests were all written differently, different names for spies, different # of tests, hard to find and replace.
