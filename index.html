@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Can I Delete This Test?</title>
+
+    <meta name="description" content="An exploration into testing, TDD, and if we're taking it too far.">
+    <meta name="author" content="Trevor Whitney">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+        <!--Intro-->
+        <section>
+            <h2>Can I Delete This Test?</h2>
+            <h4>A discussion about TDD, testing, and if we're taking it too far?</h4>
+            <p>
+                <small>Created by Trevor Whitney</small>
+            </p>
+        </section>
+
+        <!--agenda-->
+        <section>
+            <h3>Overview</h3>
+            <ol>
+                <li>Motivation for the talk</li>
+                <li>Examples of less useful tests</li>
+                <li>Exploration into how we got here</li>
+                <li>Suggestions on where to go now</li>
+                <li>Discussion (which I predict a lot of)</li>
+            </ol>
+        </section>
+
+        <!--I recently ran into a problem-->
+        <section>
+            <section>
+                <h3>I recently ran into a problem.</h3>
+            </section>
+
+            <section data-markdown="lib/examples/problem_1.md" data-separator-notes="^Note:"></section>
+
+            <section data-markdown="lib/examples/problem_2.md" data-separator-notes="^Note:"></section>
+
+            <section data-markdown="lib/examples/problem_test_1.md"></section>
+
+            <section data-markdown="lib/examples/problem_test_2.md"></section>
+        </section>
+
+        <!--Delete them all-->
+        <section>
+            <section data-background="lib/images/delete.gif">
+                <h3 style="color: white">I wanted to delete them all</h3>
+
+                <aside class="notes" data-markdown>
+                    1. They were all covered by acceptance tests
+                    1. They were tautological, and now they were failing
+
+                    But I didn't, because I the units of codes they were testing still existed, and I was
+                    taught not to delete tests unless you delete the corresponding code.
+                </aside>
+            </section>
+
+            <section data-background="lib/images/disgust.gif">
+                <h3 style="color: black">Instead I spent half a day fixing them</h3>
+            </section>
+        </section>
+
+        <!--My question for the community-->
+        <section>
+            <section>
+                <h2>My question for the community</h2>
+                <p class="fragment">Do I have permission to delete these tests?</p>
+
+                <aside class="notes" data-markdown>
+                    Examples to follow...
+                </aside>
+            </section>
+        </section>
+
+        <!--The developer test-->
+        <section>
+            <section>
+                <h3>The Developer test</h3>
+                <p>These are tests that are necessary to TDD the plumbing of your application.</p>
+            </section>
+
+            <section data-markdown="lib/examples/developer_test_1.md" data-separator-notes="^Note:"></section>
+        </section>
+
+        <!--The negative test-->
+        <section>
+            <section>
+                <h3>The negative test</h3>
+                <p>Testing that something is not true to satisfy an AC</p>
+            </section>
+
+            <section data-markdown="lib/examples/negative_code_1.md" data-separator-notes="^Note:"></section>
+            <section data-markdown="lib/examples/negative_test_1.md" data-separator-notes="^Note:"></section>
+            <section data-markdown="lib/examples/negative_code_2.md" data-separator-notes="^Note:"></section>
+            <section data-markdown="lib/examples/negative_test_2.md" data-separator-notes="^Note:"></section>
+
+        </section>
+
+        <!--The private method test-->
+        <section>
+            <section>
+                <h3>The private method test</h3>
+                <p>Or the promotion of a private method simply to not test a private method</p>
+
+                <aside class="notes">This one was hard to find an example for</aside>
+            </section>
+
+            <section>
+                <p>If a gem promotes a private method to a public method on another object, is that object now a
+                part of it's public API? What is the risk of it being consumed by users of the gem?</p>
+            </section>
+
+            <section data-markdown="lib/examples/rack_app.md">
+            </section>
+        </section>
+
+        <!--Are we killing TDD-->
+        <section>
+            <section>
+                <h3>Are we lessening the value of TDD by writing too many tests?</h3>
+                <aside>And not deleting the ones that stop being useful?</aside>
+            </section>
+
+            <section>
+                <q cite="http://www.rbcs-us.com/documents/Why-Most-Unit-Testing-is-Waste.pdf">"Any program [can be
+                    modeled] as a Turing tape, and what the program can do is somehow related to the
+                    number of bits on that tape…If you want to thoroughly test that program, you need...
+                    another Turing tape of at least the same number of bits."</q>
+            </section>
+
+            <section>
+                <p>A thoroughly tested application will have more lines ot test than of code, which means:</p>
+                <ul>
+                    <li class="fragment">More time was spent writing tests.</li>
+                    <li class="fragment">There are likely to be more bugs in the the tests than the code.</li>
+                    <li class="fragment">An incorrect test that incorrectly validates a bug is as, if not more likely,
+                        than the lack of a test that misses a bug.
+                    </li>
+                </ul>
+
+                <aside class="notes">
+                    The last one is bad, because since test are documentation, it's not always clear if the app was
+                    supposed to work that way. The first one may be good however, since the testing phase is the design
+                    phase.
+                </aside>
+            </section>
+
+            <section>
+                <q cite="http://blog.stevensanderson.com/2009/08/24/writing-great-unit-tests-best-and-worst-practises/">"It’s
+                    overwhelmingly easy to write bad unit tests that add very little value to a project while
+                    inflating the cost of code changes astronomically."</q>
+
+                <aside class="notes">
+                    Tightly coupled tests are easy to write.
+                </aside>
+            </section>
+        </section>
+
+        <!--How did we get here?-->
+        <section>
+            <section>
+                <img src="lib/images/pyramid.png"/>
+                <p>Mike Cohns Testing Pyramid</p>
+
+                <aside class="note">
+                    Fowler on the Service layer: In web applications this would correspond to testing through an API
+                    layer while the top UI part of the pyramid would correspond to tests using something like Selenium.
+                </aside>
+            </section>
+
+            <section>
+                <p>When unit testing, you should test the inputs and outputs of the unit of code under test,
+                    mocking out and spying on collaborators to make sure they receive the correct information.</p>
+
+                <aside class="notes" data-markdown>
+                    This is why I learned when I first started here, but isn't this tightly coupling your
+                    test to the APIs of external collaborators, instead of testing behaviour?
+                </aside>
+            </section>
+
+            <section>
+                <p>There should not be a single line of code in your app that was not driven out by a specific
+                    test.</p>
+                <aside class="notes" data-markdown>
+                    I also learned this, but at first didn't always understand that an acceptance test might cover a
+                    lot of lines, since it won't work without them.
+                </aside>
+            </section>
+        </section>
+
+        <!--Questioning the pyramid-->
+        <section>
+            <section>
+                <h2>Is the pyramid still the best testing philosophy?</h2>
+
+                <aside class="notes">The testing pyramid idea was developed in 2010 by Mike Cohn, but UI tests have
+                    become a lot cheaper
+                    since then while still delivering the same value.
+                </aside>
+            </section>
+
+            <section>
+                <p>Maintaining a large suite of unit tests that test implementation over behaviour is a bound by
+                    developer capacity.</p>
+                <p>Having expensive UI tests that test the behaviour of an application is CPU bound.</p>
+            </section>
+
+            <section>
+                <p>If we think of the service layer as being interchangeable with integration (not acceptance/ui) tests,
+                    could we flip it with the unit layer?</p>
+
+                <note class="aside">
+                    Test that test behaviour are less coupled to the code
+                </note>
+            </section>
+
+            <section>
+                <p>If the triangle is the best approach during the design/creation phase, could we think of it more
+                    like a diamond during the life of the application?</p>
+            </section>
+        </section>
+
+        <!--paradigm shift-->
+        <section>
+            <h2>Some suggestions for shifting the paradigm...</h2>
+        </section>
+
+        <!--TDD should be a design process-->
+        <section>
+            <section>
+                <h1>TDD should be a <strong>design</strong> process</h1>
+            </section>
+
+            <section>
+                <p>Only write a new test, at a lower level, when you need more information about what code
+                    to write next.</p>
+
+                <aside class="notes">
+                    Wise words from a colleague, start top -> bottom, and write tests as you need to understand
+                    how to design the solution
+                </aside>
+            </section>
+        </section>
+
+        <!--Unit tests are not regression tests-->
+        <section>
+            <h2>Unit tests are not regression tests</h2>
+
+            <aside class="notes" data-markdown>
+                If we use unit tests for design, and not regression, then how to we determine when to
+                delete them?
+            </aside>
+        </section>
+
+        <!--leverage cpu time as a utility-->
+        <section>
+            <section>
+                <h2>Decrease the cost of higher value UI and integration tests</h2>
+            </section>
+
+            <section>
+                <p>Cloud computing can decrease the runtime cost of UI and integration tests.</p>
+
+                <aside class="notes">
+                    Not running tests on the local machine, parallel builds on cloud resources.
+                    A "cf-push" for testing?
+                </aside>
+            </section>
+
+            <section>
+                <p>Maintaining a large, complex test suite is demanding on developer time.</p>
+                <p class="fragment">Maintaining a small, UI heavy test suite is demanding on cpu time.</p>
+                <p class="fragment">CPU time is a much cheaper resource.</p>
+
+                <aside class="notes">
+                    Yet very few project at pivotal leverage this, and instead require the investment (or waste) of
+                    developer time before a push.
+                </aside>
+            </section>
+        </section>
+
+        <!--conclusions-->
+        <section>
+            <section>
+                <h3>Some Suggestions</h3>
+                <ol>
+                    <li class="fragment">Start each feature with a UI test.</li>
+                    <li class="fragment">Favor ui, integration, and service tests that can drive out the behaviour you
+                        need.
+                    </li>
+                    <li class="fragment">Leverage CPU resources as a utility to decrease the cost of higher value
+                        tests.
+                    </li>
+                </ol>
+
+                <aside class="notes">
+                    But most importantly...
+                </aside>
+            </section>
+
+            <section>
+                <h2>Delete tests when they stop being useful</h2>
+                <p class="fragment">(particularly those pesky unit tests)</p>
+            </section>
+        </section>
+
+        <section data-background="lib/images/coffeetalk.png">
+            <h1 style="color: white">Discuss</h1>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/zoom-js/zoom.js', async: true},
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+
+</script>
+</body>
+</html>
